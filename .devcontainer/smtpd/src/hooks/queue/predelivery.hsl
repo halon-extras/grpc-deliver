@@ -1,0 +1,8 @@
+Try([
+    "plugin" => [
+        "id" => "grpc-deliver",
+        "arguments" => [
+            "url" => "http://[::1]:50051"
+        ]
+    ]
+]);

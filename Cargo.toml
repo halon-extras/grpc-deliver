@@ -1,0 +1,28 @@
+[package]
+name = "grpc-deliver"
+description = "gRPC delivery plugin"
+version = "1.0.0"
+authors = ["Halon <support@halon.io>"]
+edition = "2021"
+
+[lib]
+name = "grpc_deliver"
+path = "src/grpc-deliver.rs"
+crate-type = ["cdylib"]
+
+[[bin]]
+name = "grpc_server"
+path = "src/grpc-server.rs"
+
+[dependencies]
+serde = { version = "1.0.203", features = ["derive"] }
+serde_json = "1.0.117"
+libc = "0.2.155"
+tonic = "0.14"
+prost = "0.14"
+tonic-prost = "0.14"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+
+[build-dependencies]
+bindgen = "0.69.4"
+tonic-prost-build = "0.14"

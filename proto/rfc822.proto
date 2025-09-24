@@ -1,0 +1,14 @@
+syntax = "proto3";
+package rfc822;
+
+service Deliverer {
+    rpc deliver (Rfc822Request) returns (Rfc822Response);
+}
+
+message Rfc822Request {
+   string transactionid = 1;
+   bytes rfc822 = 2;
+}
+
+message Rfc822Response {
+}

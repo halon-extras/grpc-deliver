@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "description": "grpc-deliver schema",
+    "additionalProperties": false,
+    "properties": {
+        "threads": {
+            "type": "integer",
+            "description": "The number of worker threads. The default is the same as the number of cores."
+        }
+    }
+}

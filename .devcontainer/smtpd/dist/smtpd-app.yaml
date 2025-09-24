@@ -1,0 +1,58 @@
+resolver:
+  cache:
+    size: 10000
+scripting:
+  files: []
+  hooks:
+    eod:
+    - data: |
+        $transactionid = $transaction["id"];
+        $sender = $transaction["senderaddress"];
+        $recipients = $transaction["recipients"];
+        $mail = $arguments["mail"];
+
+        // Queue message for all recipients
+        foreach ($recipients as $recipient)
+            $mail->queue($sender, $recipient["address"], $recipient["transportid"]);
+
+        Accept();
+      id: default
+    predelivery: |
+      Try([
+          "plugin" => [
+              "id" => "grpc-deliver",
+              "arguments" => [
+                  "url" => "http://[::1]:50051"
+              ]
+          ]
+      ]);
+servers:
+- id: default
+  phases:
+    eod:
+      hook: default
+  transport: mx
+transportgroups:
+- dsn:
+    transport: mx
+  id: default
+  retry:
+    count: 30
+    intervals:
+    - interval: 60
+    - interval: 900
+    - interval: 3600
+      notify: true
+    - interval: 7200
+    - interval: 10800
+  transports:
+  - id: mx
+    session:
+      tls:
+        mode: dane
+- id: grpc-deliver-group
+  transports:
+  - connection:
+      server: 0.0.0.0
+    id: grpc-deliver
+version: '6.7'
